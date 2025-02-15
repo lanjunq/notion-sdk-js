@@ -37,6 +37,7 @@ async function findPagesEditedInLastXDays(days) {
         }
 
         var pageEdited = await findPagesEditedOnDate(response.results, targetDate);
+        pageEdited.reverse();
 
         if (pageEdited.length === 0) {
             console.log(`[${title}] No pages edited on ${titleForDate(targetDate)}, skipping ⏩`);
@@ -55,9 +56,9 @@ async function fetchNotionData() {
     console.log('🛜 Fetching notion data...');
     const response = await notion.search({
         sort: {
-            direction: 'ascending',
+            direction: 'descending',
             timestamp: 'last_edited_time'
-        }
+        },
     });
     console.log('✅ Data fetched', response.results.length, 'pages');
     return response;
