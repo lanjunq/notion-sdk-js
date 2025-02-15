@@ -59,6 +59,10 @@ async function fetchNotionData() {
             direction: 'descending',
             timestamp: 'last_edited_time'
         },
+        filter: {
+            property: 'object',
+            value: 'page'
+        }
     });
     console.log('✅ Data fetched', response.results.length, 'pages');
     return response;
@@ -96,6 +100,8 @@ async function findPagesEditedOnDate(pages, date) {
 async function createNewPageMentioningPages(parentPageId, title, pages) {
     console.log('Creating new page :', title);
 
+    console.log(pages);
+
     // Create a new page that mentions all of those pages
     const newPage = await notion.pages.create({
         parent: {
@@ -107,12 +113,14 @@ async function createNewPageMentioningPages(parentPageId, title, pages) {
             }
         },
         children: 
-            pages.map(page => ({
-                type: 'link_to_page',
-                link_to_page: {
-                    type: 'page_id',
-                    page_id: page.id
+            pages.map(page => (
+                {
+                    type: 'link_to_page',
+                    link_to_page: {
+                        type: 'page_id',
+                        page_id: page.id
+                    }
                 }
-            }))
+            ))
     });
 }
