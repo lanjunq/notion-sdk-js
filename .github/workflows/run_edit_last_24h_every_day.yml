@@ -21,8 +21,8 @@ jobs:
           
       - name: 安装依赖并运行脚本
         env:
-          API_KEY: ${{ secrets.NOTION_EDIT_LAST_24H_API_KEY }}
-          DATABASE_URL: ${{ secrets.NOTION_EDIT_LAST_24H_NEW_PAGE_PARENT_ID }}
+          NOTION_KEY: ${{ secrets.NOTION_EDIT_LAST_24H_API_KEY }}
+          NEW_PAGE_PARENT_ID: ${{ secrets.NOTION_EDIT_LAST_24H_NEW_PAGE_PARENT_ID }}
         run: |
           cd cool_scripts/edit_last_24h
           npm install

@@ -7,7 +7,7 @@ require("dotenv").config()
 const notion = new Client({ auth: process.env.NOTION_KEY });
 
 // Workspace configuration
-const newPageParentId = process.env.NOTION_EDIT_LAST_24H_NEW_PAGE_PARENT_ID; // Create new pages under this page
+const newPageParentId = process.env.NEW_PAGE_PARENT_ID; // Create new pages under this page
 
 // Script Run Configurations
 const backtrackingDays = 3; // How many days to backtrack
