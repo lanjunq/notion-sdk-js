@@ -7,8 +7,7 @@ require("dotenv").config()
 const notion = new Client({ auth: process.env.NOTION_KEY });
 
 // Workspace configuration
-const constants = require('./config.js');
-const newPageParentId = constants.pageId; // Create new pages under this page
+const newPageParentId = process.env.NOTION_EDIT_LAST_24H_NEW_PAGE_PARENT_ID; // Create new pages under this page
 
 // Script Run Configurations
 const backtrackingDays = 3; // How many days to backtrack
@@ -37,12 +36,14 @@ async function findPagesEditedInLastXDays(days) {
             continue;
         }
 
-        const pageEdited = await findPagesEditedOnDate(response, targetDate);
+        var pageEdited = await findPagesEditedOnDate(response.results, targetDate);
 
         if (pageEdited.length === 0) {
             console.log(`[${title}] No pages edited on ${titleForDate(targetDate)}, skipping ⏩`);
             continue;
         }
+
+        pageEdited = pageEdited.filter(page => page.id.replace(/-/g, '') !== newPageParentId);
 
         console.log(`[${title}] Creating page... ✅. ${pageEdited.length} pages mentioned.`);
         await createNewPageMentioningPages(newPageParentId, title, pageEdited);
@@ -54,7 +55,7 @@ async function fetchNotionData() {
     console.log('🛜 Fetching notion data...');
     const response = await notion.search({
         sort: {
-            direction: 'descending',
+            direction: 'ascending',
             timestamp: 'last_edited_time'
         }
     });
