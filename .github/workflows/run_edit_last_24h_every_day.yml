@@ -26,4 +26,4 @@ jobs:
         run: |
           cd cool_scripts/edit_last_24h
           npm install
-          npm run
+          npm run start
